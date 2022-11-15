@@ -64,10 +64,11 @@ function deleteItem(e) {
 
 function deleteAllItems(e) {
     if (confirm("Are you sure you want to delete all elements ?")) {
-        taskList.childNodes.forEach(function(item){
-            if(item.nodeType === 1){
+        taskList.childNodes.forEach(function (item) {
+            if (item.nodeType === 1) {
                 item.remove();
             }
         })
+        // taskList.innerHTML="";  //alternative
     }
 }
