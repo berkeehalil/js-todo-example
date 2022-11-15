@@ -35,7 +35,10 @@ function addNewItem(e) {
     a.innerHTML = '<i class="fas fa-times"></i>';
 
     li.appendChild(a);
+
     taskList.appendChild(li);
+
+    input.value = "";
 
     e.preventDefault();
 }
