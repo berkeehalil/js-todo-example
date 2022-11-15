@@ -18,6 +18,9 @@ function eventListeners() {
 
     // delete event
     taskList.addEventListener("click", deleteItem);
+
+    // delete all event
+    btnDeleteAll.addEventListener("click", deleteAllItems);
 }
 
 // add item
@@ -55,4 +58,16 @@ function deleteItem(e) {
         }
     }
     e.preventDefault();
+}
+
+// delete all items
+
+function deleteAllItems(e) {
+    if (confirm("Are you sure you want to delete all elements ?")) {
+        taskList.childNodes.forEach(function(item){
+            if(item.nodeType === 1){
+                item.remove();
+            }
+        })
+    }
 }
