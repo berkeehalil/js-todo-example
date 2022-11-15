@@ -7,7 +7,9 @@ const input = document.querySelector("#txtTaskName");
 const btnAddNewTask = document.querySelector("#btnAddNewTask");
 const btnDeleteAll = document.querySelector("#btnDeleteAll");
 const taskList = document.querySelector("#task-list");
+const items = ["Todo 1", "Todo 2", "Todo 3", "Todo 4"];
 
+loadItems();
 
 eventListeners();
 
@@ -23,16 +25,19 @@ function eventListeners() {
     btnDeleteAll.addEventListener("click", deleteAllItems);
 }
 
-// add item
-function addNewItem(e) {
-    if (input.value == '') {
-        alert("add new item");
-    }
+// load items
+function loadItems() {
+    items.forEach(function (item) {
+        createItem(item);
+    })
+}
 
+// create item
+function createItem(text) {
     // create li
     const li = document.createElement("li");
     li.className = "list-group-item list-group-item-secondary";
-    li.appendChild(document.createTextNode(input.value));
+    li.appendChild(document.createTextNode(text));
 
     // create a
     const a = document.createElement("a");
@@ -43,6 +48,15 @@ function addNewItem(e) {
     li.appendChild(a);
 
     taskList.appendChild(li);
+}
+
+// add item
+function addNewItem(e) {
+    if (input.value == '') {
+        alert("add new item");
+    }
+
+    createItem(input.value);
 
     input.value = "";
 
@@ -52,8 +66,9 @@ function addNewItem(e) {
 // delete item
 
 function deleteItem(e) {
-    if (confirm("Are you sure ?")) {
-        if (e.target.className == "fas fa-times") {
+
+    if (e.target.className == "fas fa-times") {
+        if (confirm("Are you sure ?")) {
             e.target.parentElement.parentElement.remove();
         }
     }
