@@ -7,7 +7,7 @@ const input = document.querySelector("#txtTaskName");
 const btnAddNewTask = document.querySelector("#btnAddNewTask");
 const btnDeleteAll = document.querySelector("#btnDeleteAll");
 const taskList = document.querySelector("#task-list");
-const items = ["Todo 1", "Todo 2", "Todo 3", "Todo 4"];
+let todos;
 
 loadItems();
 
@@ -27,17 +27,36 @@ function eventListeners() {
 
 // load items
 function loadItems() {
-    items.forEach(function (item) {
+    todos = getItemsFromLS();
+    todos.forEach(function (item) {
         createItem(item);
     })
 }
 
+// get items from local storage
+function getItemsFromLS() {
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    }
+    else {
+        todos = JSON.parse(localStorage.getItem("todos"))
+    }
+    return todos;
+}
+
+// set item to local storage
+function setItemToLS(newTodo) {
+    todos = getItemsFromLS();
+    todos.push(newTodo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
+
 // create item
-function createItem(text) {
+function createItem(newTodo) {
     // create li
     const li = document.createElement("li");
     li.className = "list-group-item list-group-item-secondary";
-    li.appendChild(document.createTextNode(text));
+    li.appendChild(document.createTextNode(newTodo));
 
     // create a
     const a = document.createElement("a");
@@ -58,6 +77,8 @@ function addNewItem(e) {
 
     createItem(input.value);
 
+    setItemToLS(input.value);
+
     input.value = "";
 
     e.preventDefault();
@@ -70,20 +91,35 @@ function deleteItem(e) {
     if (e.target.className == "fas fa-times") {
         if (confirm("Are you sure ?")) {
             e.target.parentElement.parentElement.remove();
+            deleteTodoFromStorage(e.target.parentElement.parentElement.textContent);
         }
     }
     e.preventDefault();
+}
+
+// delete todo from local storage
+function deleteTodoFromStorage(deletetodo) {
+    let todos = getItemsFromLS();
+
+    todos.forEach(function (todo, index) {
+        if(todo === deletetodo){
+            todos.splice(index,1);
+        }
+    });
+    localStorage.setItem("todos",JSON.stringify(todos));
 }
 
 // delete all items
 
 function deleteAllItems(e) {
     if (confirm("Are you sure you want to delete all elements ?")) {
-        taskList.childNodes.forEach(function (item) {
-            if (item.nodeType === 1) {
-                item.remove();
-            }
-        })
+
+        while(taskList.firstChild){
+            taskList.removeChild(taskList.firstChild)
+        }
+        
+        localStorage.clear();
+        
         // taskList.innerHTML="";  //alternative
     }
 }
