@@ -49,7 +49,10 @@ function addNewItem(e) {
 // delete item
 
 function deleteItem(e) {
-    if(e.target.className == "fas fa-times"){
-        e.target.parentElement.parentElement.remove();
+    if (confirm("Are you sure ?")) {
+        if (e.target.className == "fas fa-times") {
+            e.target.parentElement.parentElement.remove();
+        }
     }
+    e.preventDefault();
 }
